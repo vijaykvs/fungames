@@ -1,13 +1,5 @@
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
+import { HashRouter, Routes, Route, NavLink } from 'react-router-dom'
 import './App.css'
-
-const theme = {
-  accent: '#2563eb',
-  card: '#fff',
-  bg: '#f3f6ff',
-  text: '#1f2937',
-  cardBorder: '#cbd5e1',
-}
 
 const Layout = ({ children }) => (
   <div className="app-shell">
@@ -37,10 +29,10 @@ const Home = () => (
     <div className="grid">
       <div className="card">
         <h2>Neon Game</h2>
-        <p>Try a bright neon challenge.</p>
-        <a className="link-btn" href="/NeonMatch.html" target="_blank" rel="noreferrer">
+        <p>Try a bright neon challenge inside the React app.</p>
+        <NavLink className="link-btn" to="/neon-match">
           Play Neon
-        </a>
+        </NavLink>
       </div>
       <div className="card">
         <h2>Hindi Learning</h2>
@@ -94,6 +86,27 @@ const HindiHub = () => {
   )
 }
 
+const NeonPage = () => (
+  <Layout>
+    <section className="hero-card">
+      <h1>✨ Neon Match</h1>
+      <p>A bright play zone for quick reactions and color fun.</p>
+    </section>
+    <div className="content-card">
+      <p>Neon Match is being rebuilt in React so it matches the rest of the site.</p>
+      <p>For now, this page keeps the game area connected to the new theme instead of sending users to a missing file.</p>
+    </div>
+    <div className="actions">
+      <NavLink className="link-btn" to="/">
+        Back Home
+      </NavLink>
+      <NavLink className="link-btn" to="/hindi">
+        Explore Hindi
+      </NavLink>
+    </div>
+  </Layout>
+)
+
 const LessonPage = ({ title, children, levelKey }) => {
   const done = () => {
     localStorage.setItem(levelKey, 'true')
@@ -119,9 +132,10 @@ const LessonPage = ({ title, children, levelKey }) => {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/neon-match" element={<NeonPage />} />
         <Route path="/hindi" element={<HindiHub />} />
         <Route
           path="/hindi/alphabet"
@@ -174,8 +188,9 @@ function App() {
             </LessonPage>
           }
         />
+        <Route path="*" element={<Home />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
