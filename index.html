@@ -9,7 +9,10 @@
   <body>
     <div id="root"></div>
     <script>
-      if (window.location.hostname.endsWith('github.io')) {
+      if (
+        window.location.hostname.endsWith('github.io') &&
+        /^\/fungames\/?$/.test(window.location.pathname)
+      ) {
         window.location.replace('/fungames/docs/')
       }
     </script>
