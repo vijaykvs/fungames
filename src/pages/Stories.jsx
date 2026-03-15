@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
 import { useApp } from '../context/AppContext'
+import { speak, speakAll } from '../utils/speak'
 
 /* ── Content ──────────────────────────────────────────────── */
 const STORIES = [
@@ -84,26 +85,7 @@ const RHYMES = [
   },
 ]
 
-function speak(text) {
-  if (!window.speechSynthesis) return
-  window.speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = 'hi-IN'
-  u.rate = 0.8
-  window.speechSynthesis.speak(u)
-}
 
-function speakAll(lines) {
-  if (!window.speechSynthesis) return
-  window.speechSynthesis.cancel()
-  lines.forEach((line, i) => {
-    const u = new SpeechSynthesisUtterance(line)
-    u.lang = 'hi-IN'
-    u.rate = 0.78
-    // stagger
-    setTimeout(() => window.speechSynthesis.speak(u), i * 2200)
-  })
-}
 
 function StoryCard({ story, onComplete, done }) {
   const [active, setActive] = useState(null)

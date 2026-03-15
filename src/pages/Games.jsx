@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Layout from '../components/Layout'
 import { useApp } from '../context/AppContext'
+import { speak } from '../utils/speak'
 
 /* ── Difficulty word pools ────────────────────────────────── */
 // easy = common 3-5 letter words, medium = all, hard = longer/similar words
@@ -56,14 +57,7 @@ function shuffle(arr) {
   return [...arr].sort(() => Math.random() - 0.5)
 }
 
-function speak(text, lang = 'hi-IN') {
-  if (!window.speechSynthesis) return
-  window.speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = lang
-  u.rate = 0.85
-  window.speechSynthesis.speak(u)
-}
+
 
 /* ── Game 1: Word Quiz (adaptive difficulty) ─────────────── */
 const DIFF_LABELS  = ['🌱 Easy', '⭐ Medium', '🚀 Hard']

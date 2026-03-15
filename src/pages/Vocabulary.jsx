@@ -1,15 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
 import { useApp } from '../context/AppContext'
-
-function speak(text) {
-  if (!window.speechSynthesis) return
-  window.speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = 'hi-IN'
-  u.rate = 0.85
-  window.speechSynthesis.speak(u)
-}
+import { speak } from '../utils/speak'
 
 const THEMES = {
   animals: {

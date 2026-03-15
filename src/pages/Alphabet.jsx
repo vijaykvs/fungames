@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
 import { useApp } from '../context/AppContext'
+import { speak } from '../utils/speak'
 
 /* ── Full Devanagari data ─────────────────────────────────── */
 const VOWELS = [
@@ -71,14 +72,7 @@ const MATRAS = [
   { matra: 'ं', roman: 'n',  example: 'कं → kan',  base: 'क' },
 ]
 
-function speak(text) {
-  if (!window.speechSynthesis) return
-  window.speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = 'hi-IN'
-  u.rate = 0.85
-  window.speechSynthesis.speak(u)
-}
+
 
 function LetterCard({ item, type }) {
   const [flipped, setFlipped] = useState(false)

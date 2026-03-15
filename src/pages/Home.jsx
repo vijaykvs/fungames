@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
 import Layout from '../components/Layout'
+import { speak } from '../utils/speak'
 
 const WORDS_OF_DAY = [
   { hindi: 'पानी',   roman: 'paani',   meaning: 'Water',   emoji: '💧' },
@@ -12,13 +13,7 @@ const WORDS_OF_DAY = [
   { hindi: 'किताब',  roman: 'kitaab',  meaning: 'Book',    emoji: '📚' },
 ]
 
-function speak(text) {
-  if (!window.speechSynthesis) return
-  window.speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = 'hi-IN'; u.rate = 0.85
-  window.speechSynthesis.speak(u)
-}
+
 
 const todayWord = WORDS_OF_DAY[new Date().getDay() % WORDS_OF_DAY.length]
 
