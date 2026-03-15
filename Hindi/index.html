@@ -46,13 +46,38 @@
       </div>
     </div>
     <div style="margin-top:20px;">
-      <div style="background:#e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;">
+      <div id="tracker" style="background:#e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;">
         <h3 style="margin:0 0 8px;color:#1d4ed8;">🎯 Hindi Levels Progress Tracker</h3>
-        <p style="margin:0;">Beginner: <strong>Alphabet</strong> ✅ <br>Easy: <strong>Verbs</strong> ✅ <br>Medium: <strong>Sentence Builder</strong> ⬜ <br>Story: <strong>Word Match</strong> ⬜</p>
-        <small style="color:#374151;">Tip: Mark a level done after you complete the mini challenge.</small>
+        <p style="margin:0 0 10px;">Tap each level when complete. Your progress saves in this browser.</p>
+        <div style="display:grid;gap:8px;">
+          <label><input type="checkbox" id="lvl-alphabet"> Beginner: Alphabet</label>
+          <label><input type="checkbox" id="lvl-verbs"> Easy: Verbs</label>
+          <label><input type="checkbox" id="lvl-sentences"> Medium: Sentence Builder</label>
+          <label><input type="checkbox" id="lvl-story"> Story: Word Match</label>
+        </div>
+        <small style="color:#374151; display:block; margin-top:8px;">Tip: Complete one page and check it off!</small>
       </div>
       <a class="btn" href="../index.html">Back to Main Home</a>
     </div>
   </div>
+  <script>
+    const levels = [
+      {id:'lvl-alphabet', key:'hindi-level-alphabet'},
+      {id:'lvl-verbs', key:'hindi-level-verbs'},
+      {id:'lvl-sentences', key:'hindi-level-sentences'},
+      {id:'lvl-story', key:'hindi-level-story'}
+    ];
+    function loadProgress(){
+      levels.forEach(l=>{
+        const checkbox = document.getElementById(l.id);
+        if(!checkbox) return;
+        checkbox.checked = localStorage.getItem(l.key) === 'true';
+        checkbox.addEventListener('change', ()=>{
+          localStorage.setItem(l.key, checkbox.checked);
+        });
+      });
+    }
+    loadProgress();
+  </script>
 </body>
 </html>
