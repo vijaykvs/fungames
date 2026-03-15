@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route, NavLink } from 'react-router-dom'
+import NeonMatch from './NeonMatch'
 import './App.css'
 
 const Layout = ({ children }) => (
@@ -86,26 +87,7 @@ const HindiHub = () => {
   )
 }
 
-const NeonPage = () => (
-  <Layout>
-    <section className="hero-card">
-      <h1>✨ Neon Match</h1>
-      <p>A bright play zone for quick reactions and color fun.</p>
-    </section>
-    <div className="content-card">
-      <p>Neon Match is being rebuilt in React so it matches the rest of the site.</p>
-      <p>For now, this page keeps the game area connected to the new theme instead of sending users to a missing file.</p>
-    </div>
-    <div className="actions">
-      <NavLink className="link-btn" to="/">
-        Back Home
-      </NavLink>
-      <NavLink className="link-btn" to="/hindi">
-        Explore Hindi
-      </NavLink>
-    </div>
-  </Layout>
-)
+const NeonPage = () => <NeonMatch />
 
 const LessonPage = ({ title, children, levelKey }) => {
   const done = () => {
