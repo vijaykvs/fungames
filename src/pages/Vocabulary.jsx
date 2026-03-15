@@ -92,6 +92,54 @@ const THEMES = {
       { hindi: 'पेट',   roman: 'pet',    english: 'Stomach',emoji: '🫃' },
     ],
   },
+  verbs: {
+    label: '🏃 Verbs',
+    color: '#FF85A1',
+    words: [
+      { hindi: 'खाना',  roman: 'khaana', english: 'To Eat',     emoji: '🍽️' },
+      { hindi: 'पीना',  roman: 'peena',  english: 'To Drink',   emoji: '💧' },
+      { hindi: 'जाना',  roman: 'jaana',  english: 'To Go',      emoji: '🚶' },
+      { hindi: 'आना',   roman: 'aana',   english: 'To Come',    emoji: '👋' },
+      { hindi: 'सोना',  roman: 'sona',   english: 'To Sleep',   emoji: '😴' },
+      { hindi: 'खेलना', roman: 'khelna', english: 'To Play',    emoji: '🎮' },
+      { hindi: 'पढ़ना',  roman: 'padhna', english: 'To Study',   emoji: '📖' },
+      { hindi: 'लिखना', roman: 'likhna', english: 'To Write',   emoji: '✍️' },
+      { hindi: 'बोलना', roman: 'bolna',  english: 'To Speak',   emoji: '🗣️' },
+      { hindi: 'देखना', roman: 'dekhna', english: 'To See',     emoji: '👀' },
+    ],
+  },
+  phrases: {
+    label: '💬 Phrases',
+    color: '#4D96FF',
+    words: [
+      { hindi: 'नमस्ते',        roman: 'Namaste',          english: 'Hello / Greetings', emoji: '🙏' },
+      { hindi: 'धन्यवाद',      roman: 'Dhanyavaad',       english: 'Thank you',         emoji: '😊' },
+      { hindi: 'कृपया',         roman: 'Kripaya',          english: 'Please',            emoji: '🤲' },
+      { hindi: 'माफ करना',     roman: 'Maaf karna',       english: 'Sorry / Excuse me', emoji: '😔' },
+      { hindi: 'हाँ',           roman: 'Haan',             english: 'Yes',               emoji: '✅' },
+      { hindi: 'नहीं',          roman: 'Nahin',            english: 'No',                emoji: '❌' },
+      { hindi: 'अच्छा',         roman: 'Achha',            english: 'Good / Okay',       emoji: '👍' },
+      { hindi: 'क्या हाल है?',  roman: 'Kya haal hai?',   english: 'How are you?',      emoji: '😃' },
+      { hindi: 'मैं ठीक हूँ',   roman: 'Main theek hoon', english: 'I am fine',         emoji: '😌' },
+      { hindi: 'फिर मिलेंगे',   roman: 'Phir milenge',    english: 'See you again',     emoji: '👋' },
+    ],
+  },
+  sentences: {
+    label: '📝 Sentences',
+    color: '#FF9800',
+    words: [
+      { hindi: 'मैं खाना खाता हूँ।',     roman: 'Main khaana khaataa hoon.',     english: 'I eat food.',                     emoji: '🍽️', tip: 'मैं (I) + खाना (food) + खाता हूँ (eat)' },
+      { hindi: 'वह पानी पीती है।',        roman: 'Vah paanee peetee hai.',        english: 'She drinks water.',               emoji: '💧', tip: 'वह (she) + पानी (water) + पीती है (drinks)' },
+      { hindi: 'हम स्कूल जाते हैं।',     roman: 'Hum school jaate hain.',        english: 'We go to school.',                emoji: '🏫', tip: 'हम (we) + स्कूल (school) + जाते हैं (go)' },
+      { hindi: 'मेरा नाम ___ है।',        roman: 'Mera naam ___ hai.',            english: 'My name is ___.',                 emoji: '👤', tip: 'मेरा (my) + नाम (name) + है (is)' },
+      { hindi: 'यह किताब है।',            roman: 'Yah kitaab hai.',               english: 'This is a book.',                 emoji: '📚', tip: 'यह (this) + किताब (book) + है (is)' },
+      { hindi: 'मुझे भूख लगी है।',        roman: 'Mujhe bhookh lagee hai.',       english: 'I am hungry.',                    emoji: '🍴', tip: 'मुझे (to me) + भूख (hunger) + लगी है (felt)' },
+      { hindi: 'कल मैं बाज़ार गया।',      roman: 'Kal main baazaar gayaa.',       english: 'Yesterday I went to the market.', emoji: '🛒', tip: 'कल (yesterday) — past tense verb: गया' },
+      { hindi: 'आज मौसम अच्छा है।',      roman: 'Aaj mausam achha hai.',         english: 'Today the weather is nice.',      emoji: '☀️', tip: 'आज (today) + मौसम (weather) + अच्छा (good)' },
+      { hindi: 'मैं हिंदी सीख रहा हूँ।', roman: 'Main Hindee seekh raha hoon.',  english: 'I am learning Hindi.',            emoji: '🌟', tip: 'Present continuous: verb + रहा हूँ' },
+      { hindi: 'क्या तुम खेलोगे?',       roman: 'Kya tum kheloge?',             english: 'Will you play?',                  emoji: '🎮', tip: 'क्या starts a question; future: खेलोगे' },
+    ],
+  },
 }
 
 function WordCard({ word, color }) {
@@ -108,6 +156,7 @@ function WordCard({ word, color }) {
         <>
           <span className="wc-roman">{word.roman}</span>
           <span className="wc-english">{word.english}</span>
+          {word.tip && <span className="wc-tip">💡 {word.tip}</span>}
         </>
       )}
       {!revealed && <span className="wc-hint">👆 tap to reveal</span>}
@@ -115,10 +164,22 @@ function WordCard({ word, color }) {
   )
 }
 
+const THEMES_BY_AGE = {
+  A: ['animals', 'food', 'colors', 'body'],
+  B: ['animals', 'food', 'colors', 'body', 'family', 'verbs', 'phrases'],
+  C: ['animals', 'food', 'colors', 'body', 'family', 'verbs', 'phrases', 'sentences'],
+}
+const AGE_SUBTITLE = {
+  A: '🌱 Tap any card to hear it in Hindi!',
+  B: '⭐ Explore nouns, verbs & everyday phrases!',
+  C: '🚀 Nouns, verbs, phrases & full sentence patterns!',
+}
+
 export default function Vocabulary() {
-  const [theme, setTheme] = useState('animals')
-  const { addStars, markComplete, earnBadge, showCelebration, completed } = useApp()
-  const current = THEMES[theme]
+  const { addStars, markComplete, earnBadge, showCelebration, completed, ageGroup } = useApp()
+  const visibleKeys = THEMES_BY_AGE[ageGroup] || Object.keys(THEMES)
+  const [theme, setTheme] = useState(visibleKeys[0])
+  const current = THEMES[theme] || THEMES[visibleKeys[0]]
   const isDone = completed.includes('vocab-' + theme)
 
   const handleComplete = () => {
@@ -134,11 +195,11 @@ export default function Vocabulary() {
     <Layout>
       <div className="page-header">
         <h1 className="page-title">📚 Word World</h1>
-        <p className="page-sub">Tap a card to hear the Hindi word!</p>
+        <p className="page-sub">{AGE_SUBTITLE[ageGroup] || 'Tap a card to hear the Hindi word!'}</p>
       </div>
 
       <div className="theme-bar">
-        {Object.entries(THEMES).map(([key, t]) => (
+        {Object.entries(THEMES).filter(([key]) => visibleKeys.includes(key)).map(([key, t]) => (
           <button
             key={key}
             className={'theme-btn' + (theme === key ? ' active' : '')}

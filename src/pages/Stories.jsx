@@ -238,11 +238,13 @@ function RhymeCard({ rhyme, onComplete, done }) {
   )
 }
 
-const TABS = ['📖 Stories', '🎵 Rhymes']
+const ALL_TABS = ['📖 Stories', '🎵 Rhymes']
 
 export default function Stories() {
+  const { addStars, markComplete, earnBadge, showCelebration, completed, ageGroup } = useApp()
+  // Group A (3–5): rhymes only; B and C: both tabs
+  const visibleTabs = ageGroup === 'A' ? ['🎵 Rhymes'] : ALL_TABS
   const [tab, setTab] = useState(0)
-  const { addStars, markComplete, earnBadge, showCelebration, completed } = useApp()
 
   const handleComplete = (id) => {
     if (!completed.includes(id)) {
@@ -257,11 +259,15 @@ export default function Stories() {
     <Layout>
       <div className="page-header">
         <h1 className="page-title">📖 Stories & Rhymes</h1>
-        <p className="page-sub">Listen, read along, and speak out loud! 🔊</p>
+        <p className="page-sub">
+          {ageGroup === 'A' ? '🌱 Listen and sing along — tap any line to hear it!'
+            : ageGroup === 'C' ? '🚀 Read, listen & use Echo Mode to practise speaking!'
+            : 'Listen, read along, and speak out loud! 🔊'}
+        </p>
       </div>
 
       <div className="tab-bar">
-        {TABS.map((t, i) => (
+        {visibleTabs.map((t, i) => (
           <button key={t} className={'tab-btn' + (tab === i ? ' active' : '')} onClick={() => setTab(i)}>
             {t}
           </button>
@@ -269,21 +275,22 @@ export default function Stories() {
       </div>
 
       <div className="stories-list">
-        {tab === 0
-          ? STORIES.map(s => (
-              <StoryCard
-                key={s.id}
-                story={s}
-                done={completed.includes(s.id)}
-                onComplete={() => handleComplete(s.id)}
-              />
-            ))
-          : RHYMES.map(r => (
+        {/* Group A only sees rhymes (tab 0 = rhymes); B and C: tab 0 = stories, tab 1 = rhymes */}
+        {(ageGroup === 'A' || tab === 1)
+          ? RHYMES.map(r => (
               <RhymeCard
                 key={r.id}
                 rhyme={r}
                 done={completed.includes(r.id)}
                 onComplete={() => handleComplete(r.id)}
+              />
+            ))
+          : STORIES.map(s => (
+              <StoryCard
+                key={s.id}
+                story={s}
+                done={completed.includes(s.id)}
+                onComplete={() => handleComplete(s.id)}
               />
             ))
         }

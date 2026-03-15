@@ -118,11 +118,21 @@ function LetterCard({ item, type }) {
   )
 }
 
-const TABS = ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)']
+const AGE_TABS = {
+  A: ['Vowels (स्वर)'],
+  B: ['Vowels (स्वर)', 'Consonants (व्यंजन)'],
+  C: ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)'],
+}
+const AGE_SUBTITLE_ALPHA = {
+  A: '🌱 Tap any letter to hear it! Start with vowels.',
+  B: '⭐ Tap a card to hear it — tap again to see the example word!',
+  C: '🚀 Explore vowels, consonants & matras (vowel signs)!',
+}
 
 export default function Alphabet() {
   const [tab, setTab] = useState(0)
-  const { addStars, markComplete, earnBadge, showCelebration, completed } = useApp()
+  const { addStars, markComplete, earnBadge, showCelebration, completed, ageGroup } = useApp()
+  const visibleTabs = AGE_TABS[ageGroup] || AGE_TABS.C
   const isDone = completed.includes('alphabet-' + tab)
   const tabNames = ['Vowels', 'Consonants', 'Matras']
 
@@ -135,17 +145,20 @@ export default function Alphabet() {
     }
   }
 
-  const items = tab === 0 ? VOWELS : tab === 1 ? CONSONANTS : MATRAS
+  // tab 0 = Vowels (first 10 only for Group A), tab 1 = Consonants, tab 2 = Matras
+  const items = tab === 0
+    ? (ageGroup === 'A' ? VOWELS.slice(0, 10) : VOWELS)
+    : tab === 1 ? CONSONANTS : MATRAS
 
   return (
     <Layout>
       <div className="page-header">
         <h1 className="page-title">🔤 Alphabet Fun</h1>
-        <p className="page-sub">Tap any card to hear it spoken in Hindi!</p>
+        <p className="page-sub">{AGE_SUBTITLE_ALPHA[ageGroup] || 'Tap any card to hear it spoken in Hindi!'}</p>
       </div>
 
       <div className="tab-bar">
-        {TABS.map((t, i) => (
+        {visibleTabs.map((t, i) => (
           <button
             key={t}
             className={'tab-btn' + (tab === i ? ' active' : '')}

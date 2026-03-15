@@ -25,6 +25,17 @@ const HARD_POOL = [
   { hindi: 'पहाड़',  english: 'Mountain', emoji: '⛰️' },
 ]
 
+const VERB_POOL = [
+  { hindi: 'खाना',   english: 'To Eat',   emoji: '🍽️' },
+  { hindi: 'पीना',   english: 'To Drink', emoji: '💧' },
+  { hindi: 'जाना',   english: 'To Go',    emoji: '🚶' },
+  { hindi: 'आना',    english: 'To Come',  emoji: '👋' },
+  { hindi: 'सोना',   english: 'To Sleep', emoji: '😴' },
+  { hindi: 'खेलना',  english: 'To Play',  emoji: '🎮' },
+  { hindi: 'पढ़ना',  english: 'To Study', emoji: '📖' },
+  { hindi: 'लिखना',  english: 'To Write', emoji: '✍️' },
+]
+
 /* ── Shared word pool ─────────────────────────────────────── */
 const WORD_POOL = [
   { hindi: 'कुत्ता', english: 'Dog',      emoji: '🐕' },
@@ -59,10 +70,12 @@ const DIFF_LABELS  = ['🌱 Easy', '⭐ Medium', '🚀 Hard']
 const DIFF_COLORS  = ['#4CAF50',  '#2196F3',   '#9C27B0']
 
 function WordQuiz({ onScore }) {
-  const { quizDifficulty, recordQuizAnswer, showCelebration } = useApp()
+  const { quizDifficulty, recordQuizAnswer, showCelebration, ageGroup } = useApp()
 
-  // build pool based on difficulty
+  // build pool based on age group (with adaptive difficulty inside Group B)
   const pool = useState(() => {
+    if (ageGroup === 'A') return shuffle(EASY_POOL)
+    if (ageGroup === 'C') return shuffle([...HARD_POOL, ...VERB_POOL])
     if (quizDifficulty === 0) return shuffle(EASY_POOL)
     if (quizDifficulty === 2) return shuffle([...WORD_POOL, ...HARD_POOL])
     return shuffle(WORD_POOL)
@@ -150,7 +163,9 @@ function WordQuiz({ onScore }) {
 
 /* ── Game 2: Match Pairs ──────────────────────────────────── */
 function MatchPairs({ onScore }) {
-  const pairs = shuffle(WORD_POOL).slice(0, 6)
+  const { ageGroup } = useApp()
+  const agePool = ageGroup === 'A' ? EASY_POOL : ageGroup === 'C' ? [...HARD_POOL, ...VERB_POOL] : WORD_POOL
+  const pairs = shuffle(agePool).slice(0, 6)
   const [cards] = useState(() => {
     const left  = pairs.map(p => ({ id: p.hindi + '-h', value: p.hindi, type: 'hindi', pair: p.hindi }))
     const right = pairs.map(p => ({ id: p.hindi + '-e', value: p.english, type: 'english', pair: p.hindi, emoji: p.emoji }))
@@ -218,7 +233,9 @@ function MatchPairs({ onScore }) {
 
 /* ── Game 3: Spell It ─────────────────────────────────────── */
 function SpellIt({ onScore }) {
-  const words = shuffle(WORD_POOL).slice(0, 5)
+  const { ageGroup } = useApp()
+  const agePool = ageGroup === 'A' ? EASY_POOL : ageGroup === 'C' ? [...HARD_POOL, ...VERB_POOL] : WORD_POOL
+  const words = shuffle(agePool).slice(0, 5)
   const [idx, setIdx]       = useState(0)
   const [typed, setTyped]   = useState('')
   const [result, setResult] = useState(null)
@@ -284,14 +301,21 @@ function SpellIt({ onScore }) {
 
 /* ── Main Games page ──────────────────────────────────────── */
 const GAMES = [
-  { id: 'quiz',   label: '❓ Word Quiz',   desc: 'See English, pick correct Hindi' },
-  { id: 'match',  label: '🃏 Match Pairs', desc: 'Match Hindi words to English' },
-  { id: 'spell',  label: '✍️ Spell It',   desc: 'Type the Hindi word from English' },
+  { id: 'quiz',  label: '❓ Word Quiz',   desc: 'See English, pick correct Hindi' },
+  { id: 'match', label: '🃏 Match Pairs', desc: 'Match Hindi words to English' },
+  { id: 'spell', label: '✍️ Spell It',   desc: 'Type the Hindi word from English' },
 ]
+const GAMES_FOR_AGE = { A: ['quiz', 'match'], B: ['quiz', 'match', 'spell'], C: ['quiz', 'match', 'spell'] }
+const GAMES_SUBTITLE = {
+  A: '🌱 Match & quiz games — spelling unlocks at age 6+.',
+  B: '⭐ Pick a game and earn stars!',
+  C: '🚀 Games include verbs & advanced vocabulary!',
+}
 
 export default function Games() {
   const [activeGame, setActiveGame] = useState(null)
-  const { addStars, showCelebration } = useApp()
+  const { addStars, showCelebration, ageGroup } = useApp()
+  const visibleGames = GAMES.filter(g => (GAMES_FOR_AGE[ageGroup] || GAMES.map(g => g.id)).includes(g.id))
 
   const handleScore = (n) => { if (n > 0) { addStars(n); showCelebration(`+${n} Stars Earned! ⭐`, 'Keep playing to earn more!') } }
 
@@ -315,10 +339,10 @@ export default function Games() {
     <Layout>
       <div className="page-header">
         <h1 className="page-title">🎮 Mini Games</h1>
-        <p className="page-sub">Pick a game and earn stars! ⭐</p>
+        <p className="page-sub">{GAMES_SUBTITLE[ageGroup] || 'Pick a game and earn stars! ⭐'}</p>
       </div>
       <div className="games-menu">
-        {GAMES.map(g => (
+        {visibleGames.map(g => (
           <button
             key={g.id}
             className="game-menu-card"
