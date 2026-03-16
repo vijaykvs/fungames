@@ -53,6 +53,19 @@ function preferredLangsFor(text, lang) {
   return [lang, 'hi-IN', 'hi', 'en-IN', 'en']
 }
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function speakUtterance(utter) {
+  return new Promise(resolve => {
+    const done = () => resolve()
+    utter.onend = done
+    utter.onerror = done
+    window.speechSynthesis.speak(utter)
+  })
+}
+
 /**
  * Picks the most "Indian" and child-friendly voice available.
  *
@@ -96,8 +109,8 @@ function pickVoice(voices, preferredLangs) {
  * (Pitch/rate are approximate — actual sound depends on the installed voice.)
  */
 function applyProsody(utter) {
-  utter.rate   = 0.9
-  utter.pitch  = 1.28
+  utter.rate   = 0.88
+  utter.pitch  = 1.22
   utter.volume = 1.0
 }
 
@@ -110,6 +123,9 @@ export async function speak(text, lang = 'hi-IN') {
   if (!window.speechSynthesis) return
   window.speechSynthesis.cancel()
 
+  // Chromium (Chrome/Edge) can sound glitchy if we cancel + speak immediately.
+  await delay(30)
+
   const voices = await ensureVoices()
 
   const utter = new SpeechSynthesisUtterance(text)
@@ -121,7 +137,7 @@ export async function speak(text, lang = 'hi-IN') {
     utter.voice = preferredVoice
   }
 
-  window.speechSynthesis.speak(utter)
+  await speakUtterance(utter)
 }
 
 /**
@@ -131,19 +147,18 @@ export async function speakAll(lines, lang = 'hi-IN') {
   if (!window.speechSynthesis) return
   window.speechSynthesis.cancel()
 
+  await delay(30)
+
   const voices = await ensureVoices()
   const firstLine = Array.isArray(lines) ? lines[0] : ''
   const preferredVoice = pickVoice(voices, preferredLangsFor(firstLine, lang))
 
-  lines.forEach((line, i) => {
-    setTimeout(() => {
-      const u = new SpeechSynthesisUtterance(line)
-      u.lang = lang
-      applyProsody(u)
-      if (preferredVoice) {
-        u.voice = preferredVoice
-      }
-      window.speechSynthesis.speak(u)
-    }, i * 2500)
-  })
+  for (const line of lines) {
+    const u = new SpeechSynthesisUtterance(line)
+    u.lang = lang
+    applyProsody(u)
+    if (preferredVoice) u.voice = preferredVoice
+    await speakUtterance(u)
+    await delay(220)
+  }
 }
