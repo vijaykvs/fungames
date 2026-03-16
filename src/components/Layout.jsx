@@ -17,6 +17,7 @@ export default function Layout({ children }) {
           <NavLink to="/vocabulary" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>📚 Words</NavLink>
           <NavLink to="/phrases"         className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>💬 Phrases</NavLink>
           <NavLink to="/grammar" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>🧩 Grammar</NavLink>
+          <NavLink to="/parts-of-speech" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>🧠 Parts</NavLink>
           <NavLink to="/games"     className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>🎮 Games</NavLink>
           <NavLink to="/stories"   className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>📖 Stories</NavLink>
           <NavLink to="/progress"  className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>🏆 Progress</NavLink>

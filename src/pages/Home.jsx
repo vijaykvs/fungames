@@ -26,13 +26,14 @@ const LEVELS = [
 ]
 
 const MODULES = [
-  { path: '/alphabet',   emoji: '🔤', title: 'Alphabet Fun',    desc: 'Learn all Hindi letters with sounds',  color: '#FF6B6B', award: 5  },
-  { path: '/vocabulary', emoji: '📚', title: 'Word World',      desc: 'Animals, food, colors & family',       color: '#4ECDC4', award: 5  },
-  { path: '/phrases',         emoji: '💬', title: 'Phrases & Talk',    desc: 'Everyday phrases & conversations',      color: '#4D96FF', award: 5  },
-  { path: '/grammar',         emoji: '🧩', title: 'Grammar',          desc: 'Parts of speech, tenses & question words', color: '#9C27B0', award: 5  },
-  { path: '/games',      emoji: '🎮', title: 'Mini Games',      desc: 'Match, quiz & spell challenges',       color: '#FFD93D', award: 10 },
-  { path: '/stories',    emoji: '📖', title: 'Stories & Rhymes',desc: 'Listen, read & speak along',           color: '#A8E6CF', award: 8  },
-  { path: '/progress',   emoji: '🏆', title: 'My Progress',     desc: 'Stars, badges & achievements',         color: '#C9B1FF', award: 0  },
+  { path: '/alphabet',   emoji: '🔤', title: 'Alphabet Fun',     desc: 'Learn all Hindi letters with sounds',         color: '#FF6B6B', award: 5,  donePrefix: 'alphabet-' },
+  { path: '/vocabulary', emoji: '📚', title: 'Word World',       desc: 'Animals, food, colors & family',              color: '#4ECDC4', award: 5,  donePrefix: 'vocab-' },
+  { path: '/phrases',    emoji: '💬', title: 'Phrases & Talk',   desc: 'Everyday phrases & conversations',            color: '#4D96FF', award: 5,  donePrefix: 'phrases-' },
+  { path: '/grammar',    emoji: '🧩', title: 'Grammar',          desc: 'Hoon/Ho/Hai, gender, number, tenses',         color: '#9C27B0', award: 5,  donePrefix: 'grammar-' },
+  { path: '/parts-of-speech', emoji: '🧠', title: 'Parts of Speech', desc: 'Verbs, adjectives, adverbs & more',        color: '#FF85A1', award: 5,  donePrefix: 'pos-' },
+  { path: '/games',      emoji: '🎮', title: 'Mini Games',       desc: 'Match, quiz & spell challenges',              color: '#FFD93D', award: 10 },
+  { path: '/stories',    emoji: '📖', title: 'Stories & Rhymes', desc: 'Listen, read & speak along',                  color: '#A8E6CF', award: 8  },
+  { path: '/progress',   emoji: '🏆', title: 'My Progress',      desc: 'Stars, badges & achievements',                color: '#C9B1FF', award: 0  },
 ]
 
 export default function Home() {
@@ -105,7 +106,7 @@ export default function Home() {
         {/* Module cards */}
         <div className="modules-grid">
           {MODULES.map(m => {
-            const doneCount = completed.filter(c => c.startsWith(m.path.slice(1))).length
+            const doneCount = m.donePrefix ? completed.filter(c => c.startsWith(m.donePrefix)).length : 0
             return (
               <button
                 key={m.path}
