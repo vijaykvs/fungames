@@ -2,8 +2,8 @@ import { NavLink } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
 
 export default function Layout({ children }) {
-  const { stars, streak, ageGroup } = useApp()
-  const ageLabel = { A: '3–5 yrs', B: '6–8 yrs', C: '9–11 yrs' }[ageGroup] || ''
+  const { stars, streak, level } = useApp()
+  const levelLabel = level ? `Lv ${level}` : ''
 
   return (
     <div className="app-shell">
@@ -23,7 +23,7 @@ export default function Layout({ children }) {
         <div className="topbar-stats">
           <span className="stat-badge stars">⭐ {stars}</span>
           <span className="stat-badge streak">🔥 {streak}</span>
-          {ageLabel && <span className="stat-badge age">{ageLabel}</span>}
+          {levelLabel && <span className="stat-badge age">{levelLabel}</span>}
         </div>
       </header>
       <main className="main-content">{children}</main>

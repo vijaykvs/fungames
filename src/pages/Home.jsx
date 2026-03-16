@@ -17,10 +17,12 @@ const WORDS_OF_DAY = [
 
 const todayWord = WORDS_OF_DAY[new Date().getDay() % WORDS_OF_DAY.length]
 
-const AGE_GROUPS = [
-  { id: 'A', label: '3–5 Years', emoji: '🌱', desc: 'Pre-readers • Letters & Sounds', color: '#4CAF50' },
-  { id: 'B', label: '6–8 Years', emoji: '⭐', desc: 'Early readers • Words & Stories', color: '#2196F3' },
-  { id: 'C', label: '9–11 Years', emoji: '🚀', desc: 'Building fluency • Sentences', color: '#9C27B0' },
+const LEVELS = [
+  { id: '1', label: 'Level 1', name: 'Starter',  emoji: '🌱', desc: 'Vowels · Basic Colors & Animals',    color: '#4CAF50' },
+  { id: '2', label: 'Level 2', name: 'Explorer', emoji: '🌿', desc: 'All Vowels · Animals & Food',        color: '#8BC34A' },
+  { id: '3', label: 'Level 3', name: 'Learner',  emoji: '⭐', desc: 'Consonants · Body Parts & Family',  color: '#2196F3' },
+  { id: '4', label: 'Level 4', name: 'Builder',  emoji: '🚀', desc: 'Matras · Verbs, Numbers & More',    color: '#9C27B0' },
+  { id: '5', label: 'Level 5', name: 'Master',   emoji: '💎', desc: 'All Letters · Full Vocabulary',     color: '#FF6B6B' },
 ]
 
 const MODULES = [
@@ -32,10 +34,10 @@ const MODULES = [
 ]
 
 export default function Home() {
-  const { ageGroup, setAgeGroup, stars, streak, completed } = useApp()
+  const { level, setLevel, stars, streak, completed } = useApp()
   const navigate = useNavigate()
 
-  if (!ageGroup) {
+  if (!level) {
     return (
       <Layout>
         <div className="age-picker-screen">
@@ -44,20 +46,20 @@ export default function Home() {
             <h1 className="welcome-title">नमस्ते! Hello!</h1>
             <p className="welcome-sub">
               I&apos;m <strong>Moru</strong>, your Hindi learning friend!<br />
-              Pick your age group to begin 👇
+              Pick your starting level to begin 👇
             </p>
           </div>
           <div className="age-grid">
-            {AGE_GROUPS.map(g => (
+            {LEVELS.map(lv => (
               <button
-                key={g.id}
+                key={lv.id}
                 className="age-card"
-                style={{ '--card-color': g.color }}
-                onClick={() => setAgeGroup(g.id)}
+                style={{ '--card-color': lv.color }}
+                onClick={() => setLevel(lv.id)}
               >
-                <span className="age-emoji">{g.emoji}</span>
-                <span className="age-label">{g.label}</span>
-                <span className="age-desc">{g.desc}</span>
+                <span className="age-emoji">{lv.emoji}</span>
+                <span className="age-label">{lv.label} — {lv.name}</span>
+                <span className="age-desc">{lv.desc}</span>
               </button>
             ))}
           </div>
@@ -66,7 +68,7 @@ export default function Home() {
     )
   }
 
-  const currentGroup = AGE_GROUPS.find(g => g.id === ageGroup)
+  const currentLevel = LEVELS.find(lv => lv.id === level) || LEVELS[0]
 
   return (
     <Layout>
@@ -77,12 +79,12 @@ export default function Home() {
           <div className="hero-text">
             <h1 className="hero-title">नमस्ते! Let&apos;s Learn Hindi!</h1>
             <p className="hero-sub">
-              Welcome back, <strong>{currentGroup?.emoji} {currentGroup?.label}</strong> explorer!&nbsp;
+              Welcome back, <strong>{currentLevel.emoji} {currentLevel.label} — {currentLevel.name}</strong> explorer!&nbsp;
               You have <strong>{stars} ⭐</strong> and a <strong>{streak}‑day 🔥 streak!</strong>
             </p>
           </div>
-          <button className="change-age-btn" onClick={() => setAgeGroup('')}>
-            Change Age
+          <button className="change-age-btn" onClick={() => setLevel('')}>
+            Change Level
           </button>
         </div>
 

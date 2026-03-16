@@ -639,20 +639,24 @@ function WordCard({ word, color }) {
   )
 }
 
-const THEMES_BY_AGE = {
-  A: ['animals', 'food', 'colors', 'body', 'numbers'],
-  B: ['animals', 'food', 'colors', 'body', 'family', 'verbs', 'phrases', 'numbers', 'days', 'clothes', 'transport'],
-  C: ['animals', 'food', 'colors', 'body', 'family', 'verbs', 'phrases', 'sentences', 'question_words', 'conjunctions', 'pronouns', 'numbers', 'adjectives', 'days', 'clothes', 'transport'],
+const THEMES_BY_LEVEL = {
+  '1': ['colors', 'animals'],
+  '2': ['animals', 'food', 'colors'],
+  '3': ['animals', 'food', 'colors', 'body', 'family'],
+  '4': ['animals', 'food', 'colors', 'body', 'family', 'verbs', 'phrases', 'numbers', 'days', 'clothes', 'transport'],
+  '5': ['animals', 'food', 'colors', 'body', 'family', 'verbs', 'phrases', 'sentences', 'question_words', 'conjunctions', 'pronouns', 'numbers', 'adjectives', 'days', 'clothes', 'transport'],
 }
-const AGE_SUBTITLE = {
-  A: '🌱 Tap any card to hear it in Hindi!',
-  B: '⭐ Explore nouns, verbs & everyday phrases!',
-  C: '🚀 Nouns, verbs, phrases & full sentence patterns!',
+const LEVEL_SUBTITLE = {
+  '1': '🌱 Tap any card to hear it in Hindi!',
+  '2': '🌿 Animals, food and colors — tap to explore!',
+  '3': '⭐ Body parts and family unlocked!',
+  '4': '🚀 Verbs, phrases, days & transport added!',
+  '5': '💎 All vocabulary themes unlocked!',
 }
 
 export default function Vocabulary() {
-  const { addStars, markComplete, earnBadge, showCelebration, completed, ageGroup } = useApp()
-  const visibleKeys = THEMES_BY_AGE[ageGroup] || Object.keys(THEMES)
+  const { addStars, markComplete, earnBadge, showCelebration, completed, level } = useApp()
+  const visibleKeys = THEMES_BY_LEVEL[level] || Object.keys(THEMES)
   const [theme, setTheme] = useState(visibleKeys[0])
   const current = THEMES[theme] || THEMES[visibleKeys[0]]
   const isDone = completed.includes('vocab-' + theme)
@@ -670,7 +674,7 @@ export default function Vocabulary() {
     <Layout>
       <div className="page-header">
         <h1 className="page-title">📚 Word World</h1>
-        <p className="page-sub">{AGE_SUBTITLE[ageGroup] || 'Tap a card to hear the Hindi word!'}</p>
+        <p className="page-sub">{LEVEL_SUBTITLE[level] || 'Tap a card to hear the Hindi word!'}</p>
       </div>
 
       <div className="theme-bar">

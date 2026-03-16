@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 const AppContext = createContext(null)
 
 export function AppProvider({ children }) {
-  const [ageGroup, setAgeGroupState] = useState(() => localStorage.getItem('ageGroup') || '')
+  const [level, setLevelState] = useState(() => localStorage.getItem('level') || '')
   const [stars, setStars] = useState(() => parseInt(localStorage.getItem('stars') || '0'))
   const [streak, setStreak] = useState(() => parseInt(localStorage.getItem('streak') || '0'))
   const [completed, setCompleted] = useState(() => {
@@ -38,9 +38,9 @@ export function AppProvider({ children }) {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const setAgeGroup = (g) => {
-    setAgeGroupState(g)
-    localStorage.setItem('ageGroup', g)
+  const setLevel = (l) => {
+    setLevelState(l)
+    localStorage.setItem('level', l)
   }
 
   const addStars = (n) => {
@@ -77,19 +77,22 @@ export function AppProvider({ children }) {
     })
   }
 
-  // adaptive difficulty: 0=easy 1=medium 2=hard based on last ratio
+  // adaptive difficulty: 0=easy 1=medium 2=hard
+  // Level 1 is always easy; higher levels enable harder adaptive tiers
   const quizDifficulty = (() => {
+    if (level === '1') return 0
     const total = quizStats.correct + quizStats.wrong
     if (total < 5) return 0
     const ratio = quizStats.correct / total
-    if (ratio >= 0.75) return 2
+    const maxTier = level >= '4' ? 2 : 1
+    if (ratio >= 0.75) return maxTier
     if (ratio >= 0.5)  return 1
     return 0
   })()
 
   const resetAll = () => {
     localStorage.clear()
-    setAgeGroupState('')
+    setLevelState('')
     setStars(0)
     setStreak(0)
     setCompleted([])
@@ -98,7 +101,7 @@ export function AppProvider({ children }) {
 
   return (
     <AppContext.Provider value={{
-      ageGroup, setAgeGroup,
+      level, setLevel,
       stars, addStars,
       streak,
       completed, markComplete,

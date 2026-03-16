@@ -64,12 +64,13 @@ const DIFF_LABELS  = ['🌱 Easy', '⭐ Medium', '🚀 Hard']
 const DIFF_COLORS  = ['#4CAF50',  '#2196F3',   '#9C27B0']
 
 function WordQuiz({ onScore }) {
-  const { quizDifficulty, recordQuizAnswer, showCelebration, ageGroup } = useApp()
+  const { quizDifficulty, recordQuizAnswer, showCelebration, level } = useApp()
 
-  // build pool based on age group (with adaptive difficulty inside Group B)
+  // build pool based on level (with adaptive difficulty tiers)
   const pool = useState(() => {
-    if (ageGroup === 'A') return shuffle(EASY_POOL)
-    if (ageGroup === 'C') return shuffle([...HARD_POOL, ...VERB_POOL])
+    if (level === '1') return shuffle(EASY_POOL)
+    if (level === '2') return shuffle(EASY_POOL)
+    if (level === '5') return shuffle([...HARD_POOL, ...VERB_POOL])
     if (quizDifficulty === 0) return shuffle(EASY_POOL)
     if (quizDifficulty === 2) return shuffle([...WORD_POOL, ...HARD_POOL])
     return shuffle(WORD_POOL)
@@ -157,9 +158,11 @@ function WordQuiz({ onScore }) {
 
 /* ── Game 2: Match Pairs ──────────────────────────────────── */
 function MatchPairs({ onScore }) {
-  const { ageGroup } = useApp()
-  const agePool = ageGroup === 'A' ? EASY_POOL : ageGroup === 'C' ? [...HARD_POOL, ...VERB_POOL] : WORD_POOL
-  const pairs = shuffle(agePool).slice(0, 6)
+  const { level } = useApp()
+  const lvlPool = (level === '1' || level === '2') ? EASY_POOL
+    : level === '5' ? [...HARD_POOL, ...VERB_POOL]
+    : WORD_POOL
+  const pairs = shuffle(lvlPool).slice(0, 6)
   const [cards] = useState(() => {
     const left  = pairs.map(p => ({ id: p.hindi + '-h', value: p.hindi, type: 'hindi', pair: p.hindi }))
     const right = pairs.map(p => ({ id: p.hindi + '-e', value: p.english, type: 'english', pair: p.hindi, emoji: p.emoji }))
@@ -227,9 +230,11 @@ function MatchPairs({ onScore }) {
 
 /* ── Game 3: Spell It ─────────────────────────────────────── */
 function SpellIt({ onScore }) {
-  const { ageGroup } = useApp()
-  const agePool = ageGroup === 'A' ? EASY_POOL : ageGroup === 'C' ? [...HARD_POOL, ...VERB_POOL] : WORD_POOL
-  const words = shuffle(agePool).slice(0, 5)
+  const { level } = useApp()
+  const lvlPool = (level === '1' || level === '2') ? EASY_POOL
+    : level === '5' ? [...HARD_POOL, ...VERB_POOL]
+    : WORD_POOL
+  const words = shuffle(lvlPool).slice(0, 5)
   const [idx, setIdx]       = useState(0)
   const [typed, setTyped]   = useState('')
   const [result, setResult] = useState(null)
@@ -299,17 +304,25 @@ const GAMES = [
   { id: 'match', label: '🃏 Match Pairs', desc: 'Match Hindi words to English' },
   { id: 'spell', label: '✍️ Spell It',   desc: 'Type the Hindi word from English' },
 ]
-const GAMES_FOR_AGE = { A: ['quiz', 'match'], B: ['quiz', 'match', 'spell'], C: ['quiz', 'match', 'spell'] }
+const GAMES_FOR_LEVEL = {
+  '1': ['match'],
+  '2': ['quiz', 'match'],
+  '3': ['quiz', 'match', 'spell'],
+  '4': ['quiz', 'match', 'spell'],
+  '5': ['quiz', 'match', 'spell'],
+}
 const GAMES_SUBTITLE = {
-  A: '🌱 Match & quiz games — spelling unlocks at age 6+.',
-  B: '⭐ Pick a game and earn stars!',
-  C: '🚀 Games include verbs & advanced vocabulary!',
+  '1': '🌱 Match pairs to earn stars!',
+  '2': '🌿 Word quiz and match pairs — earn stars!',
+  '3': '⭐ Spelling game unlocked — test yourself!',
+  '4': '🚀 Medium difficulty — verbs & phrases in the mix!',
+  '5': '💎 Master mode — all words and full difficulty!',
 }
 
 export default function Games() {
   const [activeGame, setActiveGame] = useState(null)
-  const { addStars, showCelebration, ageGroup } = useApp()
-  const visibleGames = GAMES.filter(g => (GAMES_FOR_AGE[ageGroup] || GAMES.map(g => g.id)).includes(g.id))
+  const { addStars, showCelebration, level } = useApp()
+  const visibleGames = GAMES.filter(g => (GAMES_FOR_LEVEL[level] || GAMES.map(g => g.id)).includes(g.id))
 
   const handleScore = (n) => { if (n > 0) { addStars(n); showCelebration(`+${n} Stars Earned! ⭐`, 'Keep playing to earn more!') } }
 
@@ -333,7 +346,7 @@ export default function Games() {
     <Layout>
       <div className="page-header">
         <h1 className="page-title">🎮 Mini Games</h1>
-        <p className="page-sub">{GAMES_SUBTITLE[ageGroup] || 'Pick a game and earn stars! ⭐'}</p>
+        <p className="page-sub">{GAMES_SUBTITLE[level] || 'Pick a game and earn stars! ⭐'}</p>
       </div>
       <div className="games-menu">
         {visibleGames.map(g => (

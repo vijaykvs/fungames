@@ -223,9 +223,9 @@ function RhymeCard({ rhyme, onComplete, done }) {
 const ALL_TABS = ['📖 Stories', '🎵 Rhymes']
 
 export default function Stories() {
-  const { addStars, markComplete, earnBadge, showCelebration, completed, ageGroup } = useApp()
-  // Group A (3–5): rhymes only; B and C: both tabs
-  const visibleTabs = ageGroup === 'A' ? ['🎵 Rhymes'] : ALL_TABS
+  const { addStars, markComplete, earnBadge, showCelebration, completed, level } = useApp()
+  // Level 1–2: rhymes only; Level 3+: both stories and rhymes
+  const visibleTabs = (level === '1' || level === '2') ? ['🎵 Rhymes'] : ALL_TABS
   const [tab, setTab] = useState(0)
 
   const handleComplete = (id) => {
@@ -242,8 +242,10 @@ export default function Stories() {
       <div className="page-header">
         <h1 className="page-title">📖 Stories & Rhymes</h1>
         <p className="page-sub">
-          {ageGroup === 'A' ? '🌱 Listen and sing along — tap any line to hear it!'
-            : ageGroup === 'C' ? '🚀 Read, listen & use Echo Mode to practise speaking!'
+          {(level === '1' || level === '2')
+            ? '🌱 Listen and sing along — tap any line to hear it!'
+            : level === '5'
+            ? '💎 Read, listen & use Echo Mode to practise speaking!'
             : 'Listen, read along, and speak out loud! 🔊'}
         </p>
       </div>
@@ -257,8 +259,8 @@ export default function Stories() {
       </div>
 
       <div className="stories-list">
-        {/* Group A only sees rhymes (tab 0 = rhymes); B and C: tab 0 = stories, tab 1 = rhymes */}
-        {(ageGroup === 'A' || tab === 1)
+        {/* Level 1–2 only see rhymes (tab 0 = rhymes); Level 3+: tab 0 = stories, tab 1 = rhymes */}
+        {((level === '1' || level === '2') || tab === 1)
           ? RHYMES.map(r => (
               <RhymeCard
                 key={r.id}

@@ -112,21 +112,25 @@ function LetterCard({ item, type }) {
   )
 }
 
-const AGE_TABS = {
-  A: ['Vowels (स्वर)'],
-  B: ['Vowels (स्वर)', 'Consonants (व्यंजन)'],
-  C: ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)'],
+const LEVEL_TABS = {
+  '1': ['Vowels (स्वर)'],
+  '2': ['Vowels (स्वर)'],
+  '3': ['Vowels (स्वर)', 'Consonants (व्यंजन)'],
+  '4': ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)'],
+  '5': ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)'],
 }
-const AGE_SUBTITLE_ALPHA = {
-  A: '🌱 Tap any letter to hear it! Start with vowels.',
-  B: '⭐ Tap a card to hear it — tap again to see the example word!',
-  C: '🚀 Explore vowels, consonants & matras (vowel signs)!',
+const LEVEL_SUBTITLE = {
+  '1': '🌱 Tap any vowel to hear it spoken!',
+  '2': '🌿 Tap a card to hear it — tap again to see the example word!',
+  '3': '⭐ Consonants unlocked — tap any card to hear it!',
+  '4': '🚀 Explore vowels, consonants & matras (vowel signs)!',
+  '5': '💎 All letters and matras — you\'re a master!',
 }
 
 export default function Alphabet() {
   const [tab, setTab] = useState(0)
-  const { addStars, markComplete, earnBadge, showCelebration, completed, ageGroup } = useApp()
-  const visibleTabs = AGE_TABS[ageGroup] || AGE_TABS.C
+  const { addStars, markComplete, earnBadge, showCelebration, completed, level } = useApp()
+  const visibleTabs = LEVEL_TABS[level] || LEVEL_TABS['5']
   const isDone = completed.includes('alphabet-' + tab)
   const tabNames = ['Vowels', 'Consonants', 'Matras']
 
@@ -139,16 +143,16 @@ export default function Alphabet() {
     }
   }
 
-  // tab 0 = Vowels (first 10 only for Group A), tab 1 = Consonants, tab 2 = Matras
+  // Level 1: only first 10 vowels; Level 2+: all vowels; Level 3+: consonants; Level 4+: matras
   const items = tab === 0
-    ? (ageGroup === 'A' ? VOWELS.slice(0, 10) : VOWELS)
+    ? (level === '1' ? VOWELS.slice(0, 10) : VOWELS)
     : tab === 1 ? CONSONANTS : MATRAS
 
   return (
     <Layout>
       <div className="page-header">
         <h1 className="page-title">🔤 Alphabet Fun</h1>
-        <p className="page-sub">{AGE_SUBTITLE_ALPHA[ageGroup] || 'Tap any card to hear it spoken in Hindi!'}</p>
+        <p className="page-sub">{LEVEL_SUBTITLE[level] || 'Tap any card to hear it spoken in Hindi!'}</p>
       </div>
 
       <div className="tab-bar">
