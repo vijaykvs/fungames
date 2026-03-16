@@ -157,6 +157,186 @@ const HONA = [
   },
 ]
 
+/* ── Masculine / Feminine (Gender) ───────────────────────── */
+const GENDER = [
+  {
+    hindi: 'पुल्लिंग',
+    roman: 'pulling',
+    english: 'Masculine gender',
+    emoji: '👦',
+    tip: 'Many masculine nouns end in -ा (not always). Examples: लड़का, बेटा, कमरा।',
+  },
+  {
+    hindi: 'स्त्रीलिंग',
+    roman: 'streeling',
+    english: 'Feminine gender',
+    emoji: '👧',
+    tip: 'Many feminine nouns end in -ी / -या (not always). Examples: लड़की, कुर्सी, चिड़िया।',
+  },
+  {
+    hindi: 'लड़का',
+    roman: 'ladka',
+    english: 'Boy (masc.)',
+    emoji: '👦',
+    tip: 'Feminine pair: लड़की. Example: वह लड़का है।',
+  },
+  {
+    hindi: 'लड़की',
+    roman: 'ladki',
+    english: 'Girl (fem.)',
+    emoji: '👧',
+    tip: 'Masculine pair: लड़का. Example: वह लड़की है।',
+  },
+  {
+    hindi: 'अच्छा / अच्छी',
+    roman: 'achha / achhi',
+    english: 'Good (masc./fem.)',
+    emoji: '👍',
+    tip: 'Adjectives can change: अच्छा लड़का / अच्छी लड़की।',
+  },
+  {
+    hindi: 'मेरा / मेरी',
+    roman: 'mera / meri',
+    english: 'My (masc./fem.)',
+    emoji: '🏷️',
+    tip: 'Gender follows the noun: मेरा घर / मेरी किताब।',
+  },
+  {
+    hindi: 'गया / गई',
+    roman: 'gaya / gayi',
+    english: 'Went (masc./fem.)',
+    emoji: '🚌',
+    tip: 'Past verb agrees: मैं गया (male) / मैं गई (female)।',
+  },
+  {
+    hindi: 'थका / थकी',
+    roman: 'thaka / thaki',
+    english: 'Tired (masc./fem.)',
+    emoji: '😴',
+    tip: 'Example: मैं थका हूँ (male) / मैं थकी हूँ (female)।',
+  },
+]
+
+/* ── Singular / Plural (Number) ─────────────────────────── */
+const NUMBER = [
+  {
+    hindi: 'एकवचन',
+    roman: 'ekvachan',
+    english: 'Singular (one)',
+    emoji: '1️⃣',
+    tip: 'Used for one. Example: यह किताब है।',
+  },
+  {
+    hindi: 'बहुवचन',
+    roman: 'bahuvachan',
+    english: 'Plural (many)',
+    emoji: '👥',
+    tip: 'Used for more than one. Example: ये किताबें हैं।',
+  },
+  {
+    hindi: 'लड़का → लड़के',
+    roman: 'ladka → ladke',
+    english: 'Boy → Boys',
+    emoji: '👦',
+    tip: 'Common pattern: -ा becomes -े in plural. (लड़का/लड़के)',
+  },
+  {
+    hindi: 'लड़की → लड़कियाँ',
+    roman: 'ladki → ladkiyaan',
+    english: 'Girl → Girls',
+    emoji: '👧',
+    tip: 'Common pattern: add -याँ in plural. (लड़की/लड़कियाँ)',
+  },
+  {
+    hindi: 'किताब → किताबें',
+    roman: 'kitaab → kitaaben',
+    english: 'Book → Books',
+    emoji: '📚',
+    tip: 'Many nouns add -ें/-याँ. Example sentence: ये किताबें हैं।',
+  },
+  {
+    hindi: 'यह → ये',
+    roman: 'yah → ye',
+    english: 'This → These',
+    emoji: '👈',
+    tip: 'यह (singular) / ये (plural).',
+  },
+  {
+    hindi: 'है → हैं',
+    roman: 'hai → hain',
+    english: 'is → are',
+    emoji: '✅',
+    tip: 'यह किताब है। / ये किताबें हैं।',
+  },
+  {
+    hindi: 'मेरा → मेरे',
+    roman: 'mera → mere',
+    english: 'my (sing.) → my (plural masc.)',
+    emoji: '🏷️',
+    tip: 'Plural agreement: मेरा दोस्त / मेरे दोस्त।',
+  },
+]
+
+/* ── Tenses (Present / Past / Future) ───────────────────── */
+const TENSES = [
+  {
+    hindi: 'वर्तमान काल',
+    roman: 'vartamaan kaal',
+    english: 'Present tense',
+    emoji: '⏰',
+    tip: 'Talk about now / habits. Often: verb + ता/ती/ते + हूँ/हो/है/हैं.',
+  },
+  {
+    hindi: 'भूत काल',
+    roman: 'bhoot kaal',
+    english: 'Past tense',
+    emoji: '⏪',
+    tip: 'Talk about before. Often: गया/गई/गए, था/थी/थे.',
+  },
+  {
+    hindi: 'भविष्य काल',
+    roman: 'bhavishya kaal',
+    english: 'Future tense',
+    emoji: '🔜',
+    tip: 'Talk about later. Often: गा/गी/गे. Example: मैं जाऊँगा/जाऊँगी।',
+  },
+  {
+    hindi: 'मैं जाता हूँ।',
+    roman: 'Main jaata hoon.',
+    english: 'I go (habit / generally).',
+    emoji: '🚶',
+    tip: 'Present habitual: जाता/जाती/जाते + हूँ/हो/है/हैं.',
+  },
+  {
+    hindi: 'मैं जा रहा हूँ।',
+    roman: 'Main ja raha hoon.',
+    english: 'I am going (right now).',
+    emoji: '🏃',
+    tip: 'Present continuous: रहा/रही/रहे + हूँ/हो/है/हैं.',
+  },
+  {
+    hindi: 'मैं गया/गई।',
+    roman: 'Main gaya/gayi.',
+    english: 'I went.',
+    emoji: '🚌',
+    tip: 'Past: गया (male) / गई (female).',
+  },
+  {
+    hindi: 'मैं जाऊँगा/जाऊँगी।',
+    roman: 'Main jaaunga/jaaungi.',
+    english: 'I will go.',
+    emoji: '🛫',
+    tip: 'Future: जाऊँगा (male) / जाऊँगी (female).',
+  },
+  {
+    hindi: 'मैं जा रहा था/थी।',
+    roman: 'Main ja raha tha/thi.',
+    english: 'I was going.',
+    emoji: '🕰️',
+    tip: 'Past continuous: रहा + था/थी. (male: था, female: थी)',
+  },
+]
+
 /* ── Question Words ───────────────────────────────────────── */
 const QUESTION_WORDS = [
   { hindi: 'क्या',        roman: 'kya',         english: 'What / Is it?',          emoji: '❓' },
@@ -295,6 +475,9 @@ const SECTIONS = [
   { id: 'adverbs',        label: '💨 Adverbs',         items: ADVERBS,        color: '#FF9800' },
   { id: 'pronouns',       label: '👤 Pronouns',        items: PRONOUNS,       color: '#9C27B0' },
   { id: 'hona',           label: '✅ Hoon / Ho / Hai / Hain', items: HONA,     color: '#6C63FF' },
+  { id: 'gender',         label: '👦👧 Masculine & Feminine',  items: GENDER,  color: '#FF85A1' },
+  { id: 'number',         label: '1️⃣👥 Singular & Plural',     items: NUMBER,  color: '#2196F3' },
+  { id: 'tenses',         label: '⏳ Tenses',                  items: TENSES,  color: '#FF9800' },
   { id: 'prepositions',   label: '📌 Prepositions',    items: PREPOSITIONS,   color: '#2196F3' },
   { id: 'question-words', label: '❓ Question Words',  items: QUESTION_WORDS, color: '#E91E8C' },
   { id: 'conjunctions',   label: '🔗 Conjunctions',    items: CONJUNCTIONS,   color: '#00BCD4' },
@@ -332,7 +515,13 @@ export default function PartsOfSpeech() {
 
   const subtitle = section.id === 'hona'
     ? 'Learn when to use हूँ / हो / है / हैं — the Hindi “to be” (होना) helpers.'
-    : 'Tap any card to hear it spoken — learn grammar in Hindi!'
+    : section.id === 'gender'
+      ? 'Learn how Hindi changes words for masculine vs feminine.'
+      : section.id === 'number'
+        ? 'Learn singular vs plural — and how words change.'
+        : section.id === 'tenses'
+          ? 'Learn present, past, and future tense patterns.'
+          : 'Tap any card to hear it spoken — learn grammar in Hindi!'
 
   const handleComplete = () => {
     if (!isDone) {

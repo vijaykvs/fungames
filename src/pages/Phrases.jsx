@@ -61,6 +61,28 @@ const SENTENCES = [
   { hindi: 'कल रविवार है।',            roman: 'Kal ravivar hai.',            english: 'Tomorrow is Sunday.',             emoji: '📅', tip: 'कल (tomorrow) + day name + है (is)' },
 ]
 
+/* ── Travel Talk (Common Q&A) ───────────────────────────── */
+const TRAVEL_TALK = [
+  { hindi: 'मुझे स्टेशन जाना है।',              roman: 'Mujhe station jaana hai.',               english: 'I want to go to the station.',                emoji: '🚉', tip: 'Useful when telling your destination.' },
+  { hindi: 'स्टेशन कहाँ है?',                   roman: 'Station kahaan hai?',                    english: 'Where is the station?',                       emoji: '🗺️', tip: 'Answer: यहाँ से सीधा जाइए। / दाईं तरफ मुड़िए।' },
+  { hindi: 'बस स्टॉप कहाँ है?',                roman: 'Bus stop kahaan hai?',                   english: 'Where is the bus stop?',                      emoji: '🚌', tip: 'Answer: सामने बस स्टॉप है।' },
+  { hindi: 'टिकट कहाँ मिलेगा?',                 roman: 'Ticket kahaan milega?',                  english: 'Where will I get a ticket?',                  emoji: '🎟️', tip: 'Answer: टिकट काउंटर वहाँ है।' },
+  { hindi: 'एक टिकट दे दीजिए।',                roman: 'Ek ticket de dijiye.',                   english: 'One ticket, please.',                         emoji: '🎫', tip: 'Polite request: दीजिए = please give.' },
+  { hindi: 'यह टिकट कितने का है?',              roman: 'Yah ticket kitne ka hai?',              english: 'How much is this ticket?',                    emoji: '💰', tip: 'Answer: ___ रुपये।' },
+  { hindi: 'प्लेटफ़ॉर्म नंबर क्या है?',         roman: 'Platform number kya hai?',              english: 'What is the platform number?',                emoji: '📍', tip: 'Answer: प्लेटफ़ॉर्म नंबर ___।' },
+  { hindi: 'ट्रेन कितने बजे है?',               roman: 'Train kitne baje hai?',                 english: 'What time is the train?',                     emoji: '🕐', tip: 'Answer: ___ बजे।' },
+  { hindi: 'यह ट्रेन ___ जाएगी?',               roman: 'Yah train ___ jaayegi?',                 english: 'Will this train go to ___?',                  emoji: '🚆', tip: 'Answer: हाँ जाएगी। / नहीं जाएगी।' },
+  { hindi: 'किराया कितना होगा?',                roman: 'Kiraaya kitna hoga?',                    english: 'How much will the fare be?',                  emoji: '🧾', tip: 'Auto/taxi/bus fare. Answer: ___ रुपये।' },
+  { hindi: 'मीटर से चलिए।',                     roman: 'Meter se chaliye.',                      english: 'Please go by the meter.',                     emoji: '🚕', tip: 'Common with taxis/autos in cities.' },
+  { hindi: 'मुझे एक ऑटो चाहिए।',                roman: 'Mujhe ek auto chahiye.',                 english: 'I need an auto-rickshaw.',                    emoji: '🛺', tip: 'You can also say: टैक्सी चाहिए।' },
+  { hindi: 'मेरा सामान खो गया है।',             roman: 'Mera saamaan kho gaya hai.',            english: 'My luggage is lost.',                         emoji: '🧳', tip: 'At the station/airport/help desk.' },
+  { hindi: 'मुझे होटल चाहिए।',                  roman: 'Mujhe hotel chahiye.',                   english: 'I need a hotel.',                             emoji: '🏨', tip: 'Answer: यह होटल पास में है।' },
+  { hindi: 'चेक-इन कब है?',                     roman: 'Check-in kab hai?',                      english: 'When is check-in?',                            emoji: '🛎️', tip: 'Answer: ___ बजे।' },
+  { hindi: 'बाथरूम कहाँ है?',                   roman: 'Bathroom kahaan hai?',                   english: 'Where is the bathroom?',                      emoji: '🚻', tip: 'Also heard: टॉयलेट कहाँ है?' },
+  { hindi: 'मदद कीजिए, मैं रास्ता भूल गया/गई।',  roman: 'Madad kijiye, main raasta bhool gaya/gayi.', english: 'Help, I got lost.',                        emoji: '🆘', tip: 'गया (male) / गई (female) — choose your form.' },
+  { hindi: 'क्या आप अंग्रेज़ी बोलते हैं?',      roman: 'Kya aap angrezi bolte hain?',            english: 'Do you speak English?',                       emoji: '🗣️', tip: 'Helps when you need support.' },
+]
+
 /* ── Talking to Strangers ─────────────────────────────────── */
 const STRANGERS = [
   { hindi: 'आपका नाम क्या है?',          roman: 'Aapka naam kya hai?',             english: 'What is your name?',                        emoji: '👤', tip: 'आपका (your) + नाम (name) + क्या है (what is)' },
@@ -92,6 +114,7 @@ const STRANGERS = [
 const SECTIONS = [
   { id: 'phrases',   label: '💬 Everyday Phrases', items: PHRASES,   color: '#4D96FF' },
   { id: 'sentences', label: '📝 Sentence Patterns', items: SENTENCES, color: '#FF9800', hasTip: true },
+  { id: 'travel',    label: '✈️ Travel Talk',       items: TRAVEL_TALK, color: '#4D96FF', hasTip: true },
   { id: 'strangers', label: '🤝 Meeting People',    items: STRANGERS, color: '#4CAF50', hasTip: true },
 ]
 
