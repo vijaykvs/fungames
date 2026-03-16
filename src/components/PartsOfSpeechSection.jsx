@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Layout from '../components/Layout'
 import { useApp } from '../context/AppContext'
 import { speak } from '../utils/speak'
 
@@ -227,8 +226,7 @@ const CONJUNCTIONS = [
   { hindi: 'जितना',   roman: 'jitna',     english: 'As much as',              emoji: '⚖️' },
 ]
 
-/* ── Tabs config ──────────────────────────────────────────── */
-const SECTIONS = [
+const POS_SECTIONS = [
   { id: 'verbs',          label: '🏃 Verbs',          items: VERBS,        color: '#FF85A1' },
   { id: 'adjectives',     label: '✨ Adjectives',      items: ADJECTIVES,   color: '#FF5722' },
   { id: 'adverbs',        label: '💨 Adverbs',         items: ADVERBS,      color: '#FF9800' },
@@ -260,10 +258,10 @@ function WordCard({ item, color }) {
   )
 }
 
-export default function PartsOfSpeech() {
+export default function PartsOfSpeechSection() {
   const { addStars, markComplete, earnBadge, showCelebration, completed } = useApp()
   const [sectionIdx, setSectionIdx] = useState(0)
-  const section = SECTIONS[sectionIdx]
+  const section = POS_SECTIONS[sectionIdx]
   const isDone = completed.includes('pos-' + section.id)
 
   const handleComplete = () => {
@@ -276,14 +274,9 @@ export default function PartsOfSpeech() {
   }
 
   return (
-    <Layout>
-      <div className="page-header">
-        <h1 className="page-title">📖 Parts of Speech</h1>
-        <p className="page-sub">Tap any card to hear it spoken — learn verbs, adjectives, and more!</p>
-      </div>
-
+    <>
       <div className="tab-bar">
-        {SECTIONS.map((s, i) => (
+        {POS_SECTIONS.map((s, i) => (
           <button
             key={s.id}
             className={'tab-btn' + (sectionIdx === i ? ' active' : '')}
@@ -308,6 +301,6 @@ export default function PartsOfSpeech() {
           {isDone ? '✅ Done! +5 ⭐ earned' : '✅ Mark Section Complete (+5 ⭐)'}
         </button>
       </div>
-    </Layout>
+    </>
   )
 }

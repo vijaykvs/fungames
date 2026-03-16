@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
 import { useApp } from '../context/AppContext'
+import PartsOfSpeechSection from '../components/PartsOfSpeechSection'
 import { speak } from '../utils/speak'
 
 /* ── "To Be" (होना) forms ───────────────────────────────── */
@@ -246,6 +247,7 @@ const QUESTION_WORDS = [
 
 /* ── Tabs config ──────────────────────────────────────────── */
 const SECTIONS = [
+  { id: 'parts',          label: '📖 Parts of Speech',          kind: 'parts' },
   { id: 'hona',           label: '✅ Hoon / Ho / Hai / Hain', items: HONA,          color: '#6C63FF' },
   { id: 'gender',         label: '👦👧 Masculine & Feminine',  items: GENDER,        color: '#FF85A1' },
   { id: 'number',         label: '1️⃣👥 Singular & Plural',     items: NUMBER,        color: '#2196F3' },
@@ -286,6 +288,8 @@ export default function Grammar() {
 
   const subtitle = section.id === 'hona'
     ? 'Learn when to use हूँ / हो / है / हैं — the Hindi “to be” (होना) helpers.'
+    : section.id === 'parts'
+      ? 'Verbs, adjectives, pronouns, prepositions and more — all in one place.'
     : section.id === 'gender'
       ? 'Learn how Hindi changes words for masculine vs feminine.'
       : section.id === 'number'
@@ -323,19 +327,24 @@ export default function Grammar() {
       </div>
 
       <div className="words-grid">
-        {section.items.map((item, i) => (
-          <GrammarCard key={i} item={item} color={section.color} />
-        ))}
+        {section.kind === 'parts'
+          ? <PartsOfSpeechSection />
+          : section.items.map((item, i) => (
+            <GrammarCard key={i} item={item} color={section.color} />
+          ))
+        }
       </div>
 
-      <div className="lesson-actions">
-        <button
-          className={'btn btn-green' + (isDone ? ' done' : '')}
-          onClick={handleComplete}
-        >
-          {isDone ? '✅ Done! +5 ⭐ earned' : '✅ Mark Section Complete (+5 ⭐)'}
-        </button>
-      </div>
+      {section.kind !== 'parts' && (
+        <div className="lesson-actions">
+          <button
+            className={'btn btn-green' + (isDone ? ' done' : '')}
+            onClick={handleComplete}
+          >
+            {isDone ? '✅ Done! +5 ⭐ earned' : '✅ Mark Section Complete (+5 ⭐)'}
+          </button>
+        </div>
+      )}
     </Layout>
   )
 }
