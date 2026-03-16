@@ -125,6 +125,38 @@ const PRONOUNS = [
   { hindi: 'दूसरा',     roman: 'doosra',    english: 'Other / Another',        emoji: '2️⃣' },
 ]
 
+/* ── "To Be" (होना) forms ──────────────────────────────── */
+const HONA = [
+  {
+    hindi: 'हूँ',
+    roman: 'hoon',
+    english: 'am (used with मैं)',
+    emoji: '🙋',
+    tip: 'Rule: मैं + हूँ. Example: मैं ठीक हूँ। / मैं घर पर हूँ।',
+  },
+  {
+    hindi: 'हो',
+    roman: 'ho',
+    english: 'are (used with तुम)',
+    emoji: '👉',
+    tip: 'Rule: तुम + हो. Example: तुम कहाँ हो? / तुम अच्छे हो।',
+  },
+  {
+    hindi: 'है',
+    roman: 'hai',
+    english: 'is (used with यह/वह/वो)',
+    emoji: '📌',
+    tip: 'Rule: यह/वह/वो + है. Example: यह किताब है। / वह मेरा दोस्त है।',
+  },
+  {
+    hindi: 'हैं',
+    roman: 'hain',
+    english: 'are (used with आप/हम/वे/ये)',
+    emoji: '👥',
+    tip: 'Rule: आप (respect) + हैं, हम + हैं, वे/ये + हैं. Example: आप कैसे हैं? / हम ठीक हैं।',
+  },
+]
+
 /* ── Question Words ───────────────────────────────────────── */
 const QUESTION_WORDS = [
   { hindi: 'क्या',        roman: 'kya',         english: 'What / Is it?',          emoji: '❓' },
@@ -262,6 +294,7 @@ const SECTIONS = [
   { id: 'adjectives',     label: '✨ Adjectives',      items: ADJECTIVES,     color: '#FF5722' },
   { id: 'adverbs',        label: '💨 Adverbs',         items: ADVERBS,        color: '#FF9800' },
   { id: 'pronouns',       label: '👤 Pronouns',        items: PRONOUNS,       color: '#9C27B0' },
+  { id: 'hona',           label: '✅ Hoon / Ho / Hai / Hain', items: HONA,     color: '#6C63FF' },
   { id: 'prepositions',   label: '📌 Prepositions',    items: PREPOSITIONS,   color: '#2196F3' },
   { id: 'question-words', label: '❓ Question Words',  items: QUESTION_WORDS, color: '#E91E8C' },
   { id: 'conjunctions',   label: '🔗 Conjunctions',    items: CONJUNCTIONS,   color: '#00BCD4' },
@@ -282,6 +315,7 @@ function WordCard({ item, color }) {
         <>
           <span className="wc-roman">{item.roman}</span>
           <span className="wc-english">{item.english}</span>
+          {item.tip && <span className="wc-tip">💡 {item.tip}</span>}
         </>
       ) : (
         <span className="wc-hint">👆 tap to reveal</span>
@@ -296,6 +330,10 @@ export default function PartsOfSpeech() {
   const section = SECTIONS[sectionIdx]
   const isDone = completed.includes('pos-' + section.id)
 
+  const subtitle = section.id === 'hona'
+    ? 'Learn when to use हूँ / हो / है / हैं — the Hindi “to be” (होना) helpers.'
+    : 'Tap any card to hear it spoken — learn grammar in Hindi!'
+
   const handleComplete = () => {
     if (!isDone) {
       addStars(5)
@@ -309,7 +347,7 @@ export default function PartsOfSpeech() {
     <Layout>
       <div className="page-header">
         <h1 className="page-title">📖 Parts of Speech</h1>
-        <p className="page-sub">Tap any card to hear it spoken — learn grammar in Hindi!</p>
+        <p className="page-sub">{subtitle}</p>
       </div>
 
       <div className="tab-bar">
