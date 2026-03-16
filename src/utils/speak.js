@@ -25,34 +25,58 @@ function ensureVoices() {
   })
 }
 
-/**
- * Voice selection priority (most natural → least):
- *  1. Google Hindi female  (sounds clear and soothing on Chrome/Android)
- *  2. Any Google Hindi     (still better than system voices)
- *  3. Any hi-IN female     (system female voice for the exact locale)
- *  4. Any hi-IN voice      (fallback to any Hindi voice)
- *  5. Any voice starting   (e.g. hi-IN vs hi vs hi_IN variants)
- *     with 'hi'
- */
-function pickVoice(voices, lang) {
-  return (
-    voices.find(v => v.lang === lang   && /google/i.test(v.name) && /female|woman|heera/i.test(v.name)) ||
-    voices.find(v => v.lang === lang   && /google/i.test(v.name)) ||
-    voices.find(v => v.lang === lang   && /female|woman|heera|lekha/i.test(v.name)) ||
-    voices.find(v => v.lang === lang) ||
-    voices.find(v => v.lang.startsWith('hi'))
-  )
+function normalizeLang(lang) {
+  return String(lang || '')
+    .trim()
+    .replace(/_/g, '-')
+    .toLowerCase()
 }
 
 /**
- * Apply soothing, gentle prosody to a SpeechSynthesisUtterance.
- * - rate 0.78  → relaxed, child-friendly pace
- * - pitch 1.1  → slightly warm/bright without sounding shrill
- * - volume 1.0 → clear and audible
+ * Picks the most "Indian" and child-friendly voice available.
+ *
+ * Browsers vary widely in what voices they expose. This function:
+ * - prefers exact locale matches (hi-IN, then en-IN)
+ * - falls back to same language family (hi-*, then en-*)
+ * - gives a small boost to voices that look Indian/Hindi in the name
+ */
+function pickVoice(voices, preferredLangs) {
+  const langs = Array.isArray(preferredLangs) ? preferredLangs : [preferredLangs]
+  if (!voices?.length) return undefined
+
+  const scored = voices
+    .map(voice => {
+      const voiceLang = normalizeLang(voice.lang)
+      const voiceName = String(voice.name || '')
+
+      let score = 0
+      langs.forEach((lang, idx) => {
+        const target = normalizeLang(lang)
+        const root = target.split('-')[0]
+        const base = 100 - idx * 10
+
+        if (voiceLang === target) score = Math.max(score, base)
+        else if (root && voiceLang.startsWith(root)) score = Math.max(score, base - 35)
+      })
+
+      if (/hindi|\u0939\u093F\u0902\u0926\u0940|\u0939\u093F\u0928\u094D\u0926\u0940|india|bharat/i.test(voiceName)) score += 15
+      if (/google/i.test(voiceName)) score += 10
+      if (/female|woman|heera|lekha|neerja|kavya|kalpana/i.test(voiceName)) score += 5
+
+      return { voice, score }
+    })
+    .sort((a, b) => b.score - a.score)
+
+  return scored[0]?.score > 0 ? scored[0].voice : undefined
+}
+
+/**
+ * Apply an "innocent small kid" prosody to a SpeechSynthesisUtterance.
+ * (Pitch/rate are approximate — actual sound depends on the installed voice.)
  */
 function applyProsody(utter) {
-  utter.rate   = 0.78
-  utter.pitch  = 1.1
+  utter.rate   = 0.92
+  utter.pitch  = 1.55
   utter.volume = 1.0
 }
 
@@ -71,8 +95,11 @@ export async function speak(text, lang = 'hi-IN') {
   utter.lang = lang
   applyProsody(utter)
 
-  const preferredVoice = pickVoice(voices, lang)
-  if (preferredVoice) utter.voice = preferredVoice
+  const preferredVoice = pickVoice(voices, [lang, 'hi-IN', 'en-IN'])
+  if (preferredVoice) {
+    utter.voice = preferredVoice
+    utter.lang = preferredVoice.lang || utter.lang
+  }
 
   window.speechSynthesis.speak(utter)
 }
@@ -85,14 +112,17 @@ export async function speakAll(lines, lang = 'hi-IN') {
   window.speechSynthesis.cancel()
 
   const voices = await ensureVoices()
-  const preferredVoice = pickVoice(voices, lang)
+  const preferredVoice = pickVoice(voices, [lang, 'hi-IN', 'en-IN'])
 
   lines.forEach((line, i) => {
     setTimeout(() => {
       const u = new SpeechSynthesisUtterance(line)
       u.lang = lang
       applyProsody(u)
-      if (preferredVoice) u.voice = preferredVoice
+      if (preferredVoice) {
+        u.voice = preferredVoice
+        u.lang = preferredVoice.lang || u.lang
+      }
       window.speechSynthesis.speak(u)
     }, i * 2500)
   })
