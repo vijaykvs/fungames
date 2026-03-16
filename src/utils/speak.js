@@ -1,23 +1,55 @@
 /**
- * Speaks Hindi text in a high-pitched, cute kid-girl voice.
- * Tries to pick a female hi-IN voice; falls back to pitch/rate tuning.
+ * Voices are loaded asynchronously by the browser.
+ * Cache them after the first successful load so every subsequent
+ * call to speak() has a voice list ready immediately.
  */
-export function speak(text, lang = 'hi-IN') {
+let _cachedVoices = []
+
+function ensureVoices() {
+  if (_cachedVoices.length) return Promise.resolve(_cachedVoices)
+  return new Promise(resolve => {
+    const immediate = window.speechSynthesis.getVoices()
+    if (immediate.length) {
+      _cachedVoices = immediate
+      resolve(_cachedVoices)
+    } else {
+      window.speechSynthesis.addEventListener(
+        'voiceschanged',
+        () => {
+          _cachedVoices = window.speechSynthesis.getVoices()
+          resolve(_cachedVoices)
+        },
+        { once: true }
+      )
+    }
+  })
+}
+
+function pickVoice(voices, lang) {
+  return (
+    voices.find(v => v.lang === lang && /female|girl|woman|zira|heera/i.test(v.name)) ||
+    voices.find(v => v.lang === lang) ||
+    voices.find(v => v.lang.startsWith('hi'))
+  )
+}
+
+/**
+ * Speaks Hindi text in a high-pitched, cute kid-girl voice.
+ * Waits for voices to load before speaking so the browser
+ * can match the hi-IN language instead of falling silent.
+ */
+export async function speak(text, lang = 'hi-IN') {
   if (!window.speechSynthesis) return
   window.speechSynthesis.cancel()
+
+  const voices = await ensureVoices()
 
   const utter = new SpeechSynthesisUtterance(text)
   utter.lang  = lang
   utter.rate  = 0.82   // slightly slower — sounds younger
   utter.pitch = 1.6    // high pitch — kid-like
 
-  // Try to pick a female/child voice for the language
-  const voices = window.speechSynthesis.getVoices()
-  const preferredVoice =
-    voices.find(v => v.lang === lang && /female|girl|woman|zira|heera/i.test(v.name)) ||
-    voices.find(v => v.lang === lang) ||
-    voices.find(v => v.lang.startsWith('hi'))
-
+  const preferredVoice = pickVoice(voices, lang)
   if (preferredVoice) utter.voice = preferredVoice
 
   window.speechSynthesis.speak(utter)
@@ -26,15 +58,12 @@ export function speak(text, lang = 'hi-IN') {
 /**
  * Speaks multiple lines sequentially with a gap between each.
  */
-export function speakAll(lines, lang = 'hi-IN') {
+export async function speakAll(lines, lang = 'hi-IN') {
   if (!window.speechSynthesis) return
   window.speechSynthesis.cancel()
 
-  const voices = window.speechSynthesis.getVoices()
-  const preferredVoice =
-    voices.find(v => v.lang === lang && /female|girl|woman|zira|heera/i.test(v.name)) ||
-    voices.find(v => v.lang === lang) ||
-    voices.find(v => v.lang.startsWith('hi'))
+  const voices = await ensureVoices()
+  const preferredVoice = pickVoice(voices, lang)
 
   lines.forEach((line, i) => {
     setTimeout(() => {
