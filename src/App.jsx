@@ -5,6 +5,7 @@ import Home             from './pages/Home'
 import Alphabet         from './pages/Alphabet'
 import Vocabulary       from './pages/Vocabulary'
 import Phrases          from './pages/Phrases'
+import Grammar          from './pages/Grammar'
 import PartsOfSpeech    from './pages/PartsOfSpeech'
 import Games            from './pages/Games'
 import Stories          from './pages/Stories'
@@ -33,7 +34,9 @@ function App() {
           <Route path="/alphabet"  element={<Alphabet />} />
           <Route path="/vocabulary" element={<Vocabulary />} />
           <Route path="/phrases"          element={<Phrases />} />
-          <Route path="/parts-of-speech"  element={<PartsOfSpeech />} />
+          <Route path="/grammar"          element={<Grammar />} />
+          <Route path="/parts-of-speech"  element={<Grammar />} />
+          <Route path="/parts"            element={<PartsOfSpeech />} />
           <Route path="/games"            element={<Games />} />
           <Route path="/stories"   element={<Stories />} />
           <Route path="/progress"  element={<Progress />} />
