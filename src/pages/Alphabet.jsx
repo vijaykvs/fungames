@@ -112,17 +112,19 @@ function LetterCard({ item, type }) {
   )
 }
 
+const ALL_ALPHA_TABS = ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)']
+
 const LEVEL_TABS = {
-  '1': ['Vowels (स्वर)'],
-  '2': ['Vowels (स्वर)'],
-  '3': ['Vowels (स्वर)', 'Consonants (व्यंजन)'],
-  '4': ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)'],
-  '5': ['Vowels (स्वर)', 'Consonants (व्यंजन)', 'Matras (मात्राएँ)'],
+  '1': ALL_ALPHA_TABS,
+  '2': ALL_ALPHA_TABS,
+  '3': ALL_ALPHA_TABS,
+  '4': ALL_ALPHA_TABS,
+  '5': ALL_ALPHA_TABS,
 }
 const LEVEL_SUBTITLE = {
-  '1': '🌱 Tap any vowel to hear it spoken!',
+  '1': '🌱 Tap any card to hear it spoken — explore all letters!',
   '2': '🌿 Tap a card to hear it — tap again to see the example word!',
-  '3': '⭐ Consonants unlocked — tap any card to hear it!',
+  '3': '⭐ Practise vowels, consonants & matras!',
   '4': '🚀 Explore vowels, consonants & matras (vowel signs)!',
   '5': '💎 All letters and matras — you\'re a master!',
 }
@@ -143,10 +145,8 @@ export default function Alphabet() {
     }
   }
 
-  // Level 1: only first 10 vowels; Level 2+: all vowels; Level 3+: consonants; Level 4+: matras
-  const items = tab === 0
-    ? (level === '1' ? VOWELS.slice(0, 10) : VOWELS)
-    : tab === 1 ? CONSONANTS : MATRAS
+  // All levels now show all letters
+  const items = tab === 0 ? VOWELS : tab === 1 ? CONSONANTS : MATRAS
 
   return (
     <Layout>
