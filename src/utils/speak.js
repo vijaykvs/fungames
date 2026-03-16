@@ -32,6 +32,27 @@ function normalizeLang(lang) {
     .toLowerCase()
 }
 
+function hasDevanagari(text) {
+  return /[\u0900-\u097F]/.test(String(text || ''))
+}
+
+function preferredLangsFor(text, lang) {
+  const normalized = normalizeLang(lang)
+
+  // If the content looks Hindi (Devanagari), avoid picking an English voice.
+  if (hasDevanagari(text) || normalized.startsWith('hi')) {
+    return [lang, 'hi-IN', 'hi']
+  }
+
+  // For English content, prefer Indian English.
+  if (normalized.startsWith('en')) {
+    return [lang, 'en-IN', 'en']
+  }
+
+  // Generic fallback order.
+  return [lang, 'hi-IN', 'hi', 'en-IN', 'en']
+}
+
 /**
  * Picks the most "Indian" and child-friendly voice available.
  *
@@ -75,8 +96,8 @@ function pickVoice(voices, preferredLangs) {
  * (Pitch/rate are approximate — actual sound depends on the installed voice.)
  */
 function applyProsody(utter) {
-  utter.rate   = 0.92
-  utter.pitch  = 1.55
+  utter.rate   = 0.9
+  utter.pitch  = 1.28
   utter.volume = 1.0
 }
 
@@ -95,10 +116,9 @@ export async function speak(text, lang = 'hi-IN') {
   utter.lang = lang
   applyProsody(utter)
 
-  const preferredVoice = pickVoice(voices, [lang, 'hi-IN', 'en-IN'])
+  const preferredVoice = pickVoice(voices, preferredLangsFor(text, lang))
   if (preferredVoice) {
     utter.voice = preferredVoice
-    utter.lang = preferredVoice.lang || utter.lang
   }
 
   window.speechSynthesis.speak(utter)
@@ -112,7 +132,8 @@ export async function speakAll(lines, lang = 'hi-IN') {
   window.speechSynthesis.cancel()
 
   const voices = await ensureVoices()
-  const preferredVoice = pickVoice(voices, [lang, 'hi-IN', 'en-IN'])
+  const firstLine = Array.isArray(lines) ? lines[0] : ''
+  const preferredVoice = pickVoice(voices, preferredLangsFor(firstLine, lang))
 
   lines.forEach((line, i) => {
     setTimeout(() => {
@@ -121,7 +142,6 @@ export async function speakAll(lines, lang = 'hi-IN') {
       applyProsody(u)
       if (preferredVoice) {
         u.voice = preferredVoice
-        u.lang = preferredVoice.lang || u.lang
       }
       window.speechSynthesis.speak(u)
     }, i * 2500)
